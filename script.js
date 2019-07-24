@@ -12,6 +12,14 @@ let openDoor1;
 let openDoor2;
 let openDoor3;
 let currentlyPlaying = true;
+let score = 0;
+let highScore = 0;
+let currentStreak = document.getElementById('score-number');
+let bestStreak = document.getElementById('high-score-number');
+currentStreak.innerHTML = score;
+bestStreak.innerHTML = highScore;
+
+console.log(score.innerHTML, highScore.innerHTML);
 
 // random chore generator function
 const randomChoreDoorGenerator = () => {
@@ -53,11 +61,23 @@ const isBot = (door) => {
     }
 }
 
+const getScore = () => {
+    score++;
+    currentStreak.innerHTML = score;
+    if(score > highScore) {
+        highScore = score;
+        bestStreak.innerHTML = highScore;
+    }
+}
+
 const gameOver = (status) => {
     if(status === 'win') {
         startButton.innerHTML = 'You win! Play again?';
+        getScore();
     } else if (status === 'lose') {
         startButton.innerHTML = 'Game Over! Play again?';
+        score = 0;
+        currentStreak.innerHTML = score;
     }
     currentlyPlaying = false;
 }
@@ -95,13 +115,17 @@ door3.onclick = () => {
 }
 
 const startRound = () => {
+    if (!currentlyPlaying) {
     numClosedDoors = 3;
     door1.src = closedDoorPath;
     door2.src = closedDoorPath;
     door3.src = closedDoorPath;
     startButton.innerHTML = 'Good luck!';
     currentlyPlaying = true;
+    score.innerHTML = 0;
+    highScore.innerHTML = 0;
     randomChoreDoorGenerator();
+    }
 }
 
 startButton.onclick = () => {
