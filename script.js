@@ -11,6 +11,7 @@ let numClosedDoors = 3;
 let openDoor1;
 let openDoor2;
 let openDoor3;
+let currentlyPlaying = true;
 
 // random chore generator function
 const randomChoreDoorGenerator = () => {
@@ -45,7 +46,7 @@ const isClicked = (door) => {
 }
 
 const isBot = (door) => {
-    if(door === botDoorPath) {
+    if(door.src === botDoorPath) {
         return true;
     } else {
         return false;
@@ -58,6 +59,7 @@ const gameOver = (status) => {
     } else if (status === 'lose') {
         startButton.innerHTML = 'Game Over! Play again?';
     }
+    currentlyPlaying = false;
 }
 
 const playDoor = (door) => {
@@ -72,22 +74,36 @@ const playDoor = (door) => {
 
 // onclick functions for each door
 door1.onclick = () => {
-    if(!isClicked(door1)) {
+    if(currentlyPlaying && !isClicked(door1)) {
         door1.src = openDoor1;
         playDoor(door1);
     }
 }
 
 door2.onclick = () => {
-    if(!isClicked(door2)) {
+    if(currentlyPlaying && !isClicked(door2)) {
         door2.src = openDoor2;
         playDoor(door2);
     }
 }
 
 door3.onclick = () => {
-    if(!isClicked(door3)) {
+    if(currentlyPlaying && !isClicked(door3)) {
         door3.src = openDoor3;
         playDoor(door3);
     }
+}
+
+const startRound = () => {
+    numClosedDoors = 3;
+    door1.src = closedDoorPath;
+    door2.src = closedDoorPath;
+    door3.src = closedDoorPath;
+    startButton.innerHTML = 'Good luck!';
+    currentlyPlaying = true;
+    randomChoreDoorGenerator();
+}
+
+startButton.onclick = () => {
+    startRound();
 }
